@@ -10,7 +10,7 @@ var lastUpdateKey = "diaryRu.followersChecker.lastUpdate";
 var followersCountKey = "diaryRu.followersChecker.followers.count";
 var followersKeyMask = "diaryRu.followersChecker.followers.";
 var newFollowersKey = "diaryRu.followersChecker.followers.new";
-var leavedFollowersKey = "diaryRu.followersChecker.followers.leaved";
+var unsubscribedFollowersKey = "diaryRu.followersChecker.followers.leaved";
 
 var informationDivClassName = "diaryRu_followersChecker_information";
 
@@ -52,18 +52,27 @@ function UpdateLocalStorage(followers) {
     SaveFollowers(followers);
 }
 
-function GetDifference(firstArray, secondArray) {
-    var difference = [];
-    for(var index = 0; index < secondArray.length; ++index) {
-        var element = firstArray[index];
-        if(secondArray.indexOf(element) === -1) {
-            difference.push(element);
+function ContainFollowerWithName(followers, followerName) {
+    for(var index = 0; index < followers.length; ++index) {
+        if(followers[index].name == followerName) {
+            return true;
         }
     }
-    return difference;
+    return false;
 }
 
-function GetFollowers() {
+function GetFollowersComplement(leftFollowers, rightFollowers) {
+    var complementResult = [];
+    for(var index = 0; index < leftFollowers.length; ++index) {
+        var element = leftFollowers[index];
+        if(!ContainFollowerWithName(rightFollowers, element.name)) {
+            complementResult.push(element);
+        }
+    }
+    return complementResult;
+}
+
+function GetFollowersFromPage() {
     var followers = [];
     var anchors = document.querySelectorAll("#pchs li a");
     for(var index = 0; index < anchors.length; ++index) {
@@ -82,12 +91,12 @@ function FollowersToString(followers) {
         if(index > 0) {
             result = result + ", ";
         }
-        restult = result + OneFollowerToString(followers[index]);
+        result += OneFollowerToString(followers[index]);
     }
     return result;
 }
 
-function CreateInformationDiv(newFollowersString, leavedFollowersString) {
+function CreateInformationDiv(newFollowersString, unsubscribedFollowersString) {
     var informationDiv = document.getElementById(informationDivClassName);
     if(informationDiv == null) {
         var informationDiv = document.createElement("div");
@@ -96,8 +105,8 @@ function CreateInformationDiv(newFollowersString, leavedFollowersString) {
         document.getElementById("pchs").parentNode.appendChild(informationDiv);
     }
     var newFollowersInformation = "<p><b>New followers:</b> " + newFollowersString + "</p>";
-    var leavedFollowersInformation = "<p><b>Leaved followers:</b> " + leavedFollowersString + "</p>";
-    informationDiv.innerHTML = newFollowersInformation + leavedFollowersInformation;
+    var unsubscribedFollowersInformation = "<p><b>Leaved followers:</b> " + unsubscribedFollowersString + "</p>";
+    informationDiv.innerHTML = newFollowersInformation + unsubscribedFollowersInformation;
 }
  
 if(!supports_html5_storage()) {
@@ -105,32 +114,39 @@ if(!supports_html5_storage()) {
 }
 
 function main() {
-    var currentFollowers = GetFollowers();
-    var lastUpdate = localStorage.getItem(lastUpdateKey);
+    var currentFollowers = GetFollowersFromPage();
+    var lastUpdateDay = localStorage.getItem(lastUpdateKey);
+
+    var newFollowersString = "";
+    var unsubscribedFollowersString = "";
     
-    if(lastUpdate == null) {
+    if(lastUpdateDay == null) {
+        // First time
+        localStorage.setItem(newFollowersKey, newFollowersString);
+        localStorage.setItem(unsubscribedFollowersKey, unsubscribedFollowersString);
+
         UpdateLocalStorage(currentFollowers);
-        CreateInformationDiv([], []);
-    } else if (lastUpdate < new Date().getDate()) {
-        var lastFollowers = GetStoredFollowers();
+    } else if (lastUpdateDay < new Date().getDate()) {
+        // Next day, should update followers
+        var yesterdeyFollowers = GetStoredFollowers();
         
-        var newFollowersString = FollowersToString(GetDifference(currentFollowers, lastFollowers));
-        var leavedFollowersString = FollowersToString(GetDifference(lastFollowers, currentFollowers));
+        newFollowersString = FollowersToString(GetFollowersComplement(currentFollowers, yesterdeyFollowers));
+        unsubscribedFollowersString = FollowersToString(GetFollowersComplement(yesterdeyFollowers, currentFollowers));
 
         localStorage.setItem(newFollowersKey, newFollowersString);
-        localStorage.setItem(leavedFollowersKey, leavedFollowersString);
-
-        CreateInformationDiv(newFollowersString, leavedFollowersString);
+        localStorage.setItem(unsubscribedFollowersKey, unsubscribedFollowersString);
         
         UpdateLocalStorage(currentFollowers);
     } else {
-        var newFollowersString = localStorage.getItem(newFollowersKey);
-        var leavedFollowersString = localStorage.getItem(leavedFollowersString);
-        if (newFollowersString == null) newFollowersString = "";
-        if (leavedFollowersString == null) leavedFollowersString = "";
+        // Followers updated, should show stored information
+        newFollowersString = localStorage.getItem(newFollowersKey);
+        unsubscribedFollowersString = localStorage.getItem(unsubscribedFollowersString);
 
-        CreateInformationDiv(newFollowersString, leavedFollowersString);
+        if (newFollowersString == null) newFollowersString = "";
+        if (unsubscribedFollowersString == null) unsubscribedFollowersString = "";
     }
+    
+    CreateInformationDiv(newFollowersString, unsubscribedFollowersString);
 }
 
 main();
