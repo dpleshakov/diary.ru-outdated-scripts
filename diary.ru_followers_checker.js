@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       diary followers checker
-// @namespace  http://userscripts.org/scripts/show/486953
-// @author     dpleshakov (http://userscripts.org/users/473776)
+// @namespace  https://github.com/dpleshakov/diary.ru-followers-checker
+// @author     dpleshakov (https://github.com/dpleshakov)
 // @version    1.0
 // @include    *://*diary.ru/?favorite*
 // ==/UserScript==
