@@ -1,0 +1,1 @@
+Script for Tampermonkey/Greasemonkey that will check state of your followers on diary.ru: new followers and missing followers.
