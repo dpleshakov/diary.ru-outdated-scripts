@@ -113,7 +113,32 @@ if(!supports_html5_storage()) {
     return false;
 }
 
+function testPchsAndHide() {
+    var tdiv = document.getElementById("pchs_title");
+    if (tdiv == null) {
+        alert("Пожалуйста, включите в настройках показ постоянных читателей на странице избранного!");
+        return false;
+    }
+    else {
+        tdiv.innerHTML="";
+        return true;
+    }
+}
+
+if(!testPchsAndHide()) {
+    return false;
+}
+
+function hideDefaultPchsList() {
+    var anchors = document.querySelectorAll("#pchs li");
+    if (anchors != null) {
+        anchors[0].innerHTML=""; // No other way for hide the element
+    }
+}
+
+
 function main() {
+    hideDefaultPchsList();
     var currentFollowers = GetFollowersFromPage();
     var lastUpdateDay = localStorage.getItem(lastUpdateKey);
 
