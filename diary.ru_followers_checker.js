@@ -5,6 +5,7 @@
 // @version    1.0
 // @include    *://*diary.ru/?favorite*
 // ==/UserScript==
+"use strict";
 
 var lastUpdateKey = "diaryRu.followersChecker.lastUpdate";
 var followersCountKey = "diaryRu.followersChecker.followers.count";
@@ -54,7 +55,7 @@ function GetStoredFollowers() {
 }
 
 function UpdateLocalStorage(followers) {
-    localStorage.setItem(lastUpdateKey, new Date().toString();
+    localStorage.setItem(lastUpdateKey, new Date().toString());
     SaveFollowers(followers);
 }
 
