@@ -54,7 +54,7 @@ function GetStoredFollowers() {
 }
 
 function UpdateLocalStorage(followers) {
-    localStorage.setItem(lastUpdateKey, new Date().getDate());
+    localStorage.setItem(lastUpdateKey, new Date().toString();
     SaveFollowers(followers);
 }
 
@@ -161,6 +161,7 @@ function main() {
     if (hideDef) { hideDefaultPchsList(); }
     var currentFollowers = GetFollowersFromPage();
     var lastUpdateDay = localStorage.getItem(lastUpdateKey);
+    lastUpdateDay = Date.parse(lastUpdateDay);
 
     var newFollowersString = "";
     var unsubscribedFollowersString = "";
@@ -170,7 +171,7 @@ function main() {
         localStorage.setItem(unsubscribedFollowersKey, unsubscribedFollowersString);
 
         UpdateLocalStorage(currentFollowers);
-    } else if (lastUpdateDay < new Date().getDate()) {
+    } else if (lastUpdateDay < new Date()) {
         // Next day, should update followers
         var yesterdeyFollowers = GetStoredFollowers();
         
