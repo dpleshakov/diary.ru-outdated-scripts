@@ -13,6 +13,7 @@ var newFollowersKey = "diaryRu.followersChecker.followers.new";
 var unsubscribedFollowersKey = "diaryRu.followersChecker.followers.leaved";
 
 var informationDivClassName = "diaryRu_followersChecker_information";
+var hideDef = false; /*Hide info from page*/
 
 function supports_html5_storage() {
   try {
@@ -120,7 +121,7 @@ function testPchsAndHide() {
         return false;
     }
     else {
-        tdiv.innerHTML="";
+        if (hideDef) { tdiv.innerHTML=""; }
         return true;
     }
 }
@@ -138,7 +139,7 @@ function hideDefaultPchsList() {
 
 
 function main() {
-    hideDefaultPchsList();
+    if (hideDef) { hideDefaultPchsList(); }
     var currentFollowers = GetFollowersFromPage();
     var lastUpdateDay = localStorage.getItem(lastUpdateKey);
 
@@ -165,7 +166,7 @@ function main() {
     } else {
         // Followers updated, should show stored information
         newFollowersString = localStorage.getItem(newFollowersKey);
-        unsubscribedFollowersString = localStorage.getItem(unsubscribedFollowersString);
+        unsubscribedFollowersString = localStorage.getItem(unsubscribedFollowersKey);
 
         if (newFollowersString == null) newFollowersString = "";
         if (unsubscribedFollowersString == null) unsubscribedFollowersString = "";
