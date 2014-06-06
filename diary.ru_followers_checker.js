@@ -25,25 +25,30 @@ function supports_html5_storage() {
 
 function SaveFollowers(followers) {
     var storedFoolowersCount = parseInt(localStorage.getItem(followersCountKey));
+    var preMask = '';
     if(storedFoolowersCount !== NaN) {
         for(var index = 0; index < storedFoolowersCount; ++index) {
-            localStorage.removeItem(followersKeyMask + index.toString() + ".name");
-            localStorage.removeItem(followersKeyMask + index.toString() + ".url");
+            preMask = followersKeyMask + index.toString();
+            localStorage.removeItem(preMask + ".name");
+            localStorage.removeItem(preMask + ".url");
         }
     }
-    
-    localStorage.setItem(followersCountKey, followers.length);
-    for(var index = 0; index < followers.length; ++index) {
-        localStorage.setItem(followersKeyMask + index.toString() + ".name", followers[index].name);
-        localStorage.setItem(followersKeyMask + index.toString() + ".url", followers[index].url);
+    var len = followers.length;
+    localStorage.setItem(followersCountKey, len);
+    for(var index = 0; index < len; ++index) {
+        preMask = followersKeyMask + index.toString();
+        localStorage.setItem(preMask + ".name", followers[index].name);
+        localStorage.setItem(preMask + ".url", followers[index].url);
     }
 }
 
 function GetStoredFollowers() {
     var followers = [];
+    var preMask = '';
     var storedFoolowersCount = parseInt(localStorage.getItem(followersCountKey));
     for(var index = 0; index < storedFoolowersCount; ++index) {
-        followers.push({'name': localStorage.getItem(followersKeyMask + index.toString() + ".name"), 'url': localStorage.getItem(followersKeyMask + index.toString() + ".url")});
+        preMask = followersKeyMask + index.toString();
+        followers.push({'name': localStorage.getItem(preMask + ".name"), 'url': localStorage.getItem(preMask + ".url")});
     }
     return followers;
 }
@@ -54,7 +59,8 @@ function UpdateLocalStorage(followers) {
 }
 
 function ContainFollowerWithName(followers, followerName) {
-    for(var index = 0; index < followers.length; ++index) {
+    var len = followers.length;
+    for(var index = 0; index < len; ++index) {
         if(followers[index].name == followerName) {
             return true;
         }
@@ -64,7 +70,8 @@ function ContainFollowerWithName(followers, followerName) {
 
 function GetFollowersComplement(leftFollowers, rightFollowers) {
     var complementResult = [];
-    for(var index = 0; index < leftFollowers.length; ++index) {
+    var len = leftFollowers.length;
+    for(var index = 0; index < len; ++index) {
         var element = leftFollowers[index];
         if(!ContainFollowerWithName(rightFollowers, element.name)) {
             complementResult.push(element);
@@ -76,8 +83,19 @@ function GetFollowersComplement(leftFollowers, rightFollowers) {
 function GetFollowersFromPage() {
     var followers = [];
     var anchors = document.querySelectorAll("#pchs li a");
-    for(var index = 0; index < anchors.length; ++index) {
-        followers.push({'name': anchors[index].innerHTML, 'url': anchors[index].href});
+    var len = anchors.length;
+    var elem = null;
+    var name = '';
+    var href = '';
+    for(var index = 0; index < len; ++index) {
+        elem = anchors[index];
+        name = elem.innerHTML.toString();
+        name.replace('<font color="red">','');
+        name.replace('</font>','');
+        href = elem.href.toString();
+        href.replace('&amp;checknewreader"','');
+        href.replace('&checknewreader"','');
+        followers.push({'name': name, 'url': href});
     }
     return followers;
 }
@@ -88,7 +106,8 @@ function OneFollowerToString(oneFollower) {
 
 function FollowersToString(followers) {
     var result = "";
-    for(var index = 0; index < followers.length; ++index) {
+    var len = followers.length;
+    for(var index = 0; index < len; ++index) {
         if(index > 0) {
             result = result + ", ";
         }
@@ -145,7 +164,6 @@ function main() {
 
     var newFollowersString = "";
     var unsubscribedFollowersString = "";
-    
     if(lastUpdateDay == null) {
         // First time
         localStorage.setItem(newFollowersKey, newFollowersString);
