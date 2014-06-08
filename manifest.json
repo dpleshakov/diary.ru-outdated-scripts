@@ -9,8 +9,13 @@
                 "http://*.diary.ru/?favorite"
             ],
             "js": [
-                "diary.ru_followers_checker.js"
+                "diary.ru_followers_checker.js",
+                "uninstall.js"
             ]
         }
+    ],
+    "permissions": [
+        "management",
+        "storage"
     ]
 }
