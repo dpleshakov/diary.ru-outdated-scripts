@@ -1,0 +1,16 @@
+{
+    "name": "diary followers checker",
+    "description": "Show new followers on diary.ru",
+    "version": "1.1",
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*.diary.ru/?favorite"
+            ],
+            "js": [
+                "diary.ru_followers_checker.js"
+            ]
+        }
+    ]
+}
