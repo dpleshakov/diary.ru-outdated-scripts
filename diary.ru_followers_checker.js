@@ -55,7 +55,7 @@ function GetStoredFollowers() {
 }
 
 function UpdateLocalStorage(followers) {
-    localStorage.setItem(lastUpdateKey, new Date().toString());
+    localStorage.setItem(lastUpdateKey, new Date().getDate().toString());
     SaveFollowers(followers);
 }
 
@@ -86,16 +86,15 @@ function GetFollowersFromPage() {
     var anchors = document.querySelectorAll("#pchs li a");
     var len = anchors.length;
     var elem = null;
-    var name = '';
-    var href = '';
+    var name = '', href = '';
     for(var index = 0; index < len; ++index) {
         elem = anchors[index];
         name = elem.innerHTML.toString();
-        name.replace('<font color="red">','');
-        name.replace('</font>','');
+        name = name.replace(/<font.+?>/gi, '')
+        //name = name.replace('<font color="red">','');
+        name = name.replace('</font>','');
         href = elem.href.toString();
-        href.replace('&amp;checknewreader"','');
-        href.replace('&checknewreader"','');
+        href = href.replace(/&.*checknewreader/gi,'')
         followers.push({'name': name, 'url': href});
     }
     return followers;
@@ -151,18 +150,17 @@ if(!testPchsAndHide()) {
 }
 
 function hideDefaultPchsList() {
-    var anchors = document.querySelectorAll("#pchs li");
+    var anchors = document.querySelector("#pchs li");
     if (anchors != null) {
-        anchors[0].innerHTML=""; // No other way for hide the element
+        anchors.innerHTML = ""; // No other way for hide the element
     }
 }
-
 
 function main() {
     if (hideDef) { hideDefaultPchsList(); }
     var currentFollowers = GetFollowersFromPage();
     var lastUpdateDay = localStorage.getItem(lastUpdateKey);
-    lastUpdateDay = Date.parse(lastUpdateDay);
+    if (lastUpdateDay != null) lastUpdateDay = parseInt(lastUpdateDay);
 
     var newFollowersString = "";
     var unsubscribedFollowersString = "";
@@ -172,7 +170,7 @@ function main() {
         localStorage.setItem(unsubscribedFollowersKey, unsubscribedFollowersString);
 
         UpdateLocalStorage(currentFollowers);
-    } else if (lastUpdateDay < new Date()) {
+    } else if (lastUpdateDay != new Date().getDate()) {
         // Next day, should update followers
         var yesterdeyFollowers = GetStoredFollowers();
         
