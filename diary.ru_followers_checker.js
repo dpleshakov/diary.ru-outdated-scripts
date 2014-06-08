@@ -2,7 +2,8 @@
 // @name       diary followers checker
 // @namespace  https://github.com/dpleshakov/diary.ru-followers-checker
 // @author     dpleshakov (https://github.com/dpleshakov)
-// @version    1.0
+// @contributor Yuri Astrov (https://github.com/yastrov)
+// @version    1.1
 // @include    *://*diary.ru/?favorite*
 // ==/UserScript==
 "use strict";
