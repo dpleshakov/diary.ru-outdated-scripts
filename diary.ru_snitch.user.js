@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name       diary snitch
-// @namespace  http://userscripts.org/scripts/show/145726
-// @author     dpleshakov (http://userscripts.org/users/473776)
+// @namespace  http://github.com/dpleshakov/diary.ru-scripts/diary.ru_snitch.user.js
+// @author     dpleshakov (http://github.com/dpleshakov)
 // @version    1.0
 // @description  Change 'snitch' link, just for fun.
 // @include      *://*.diary.ru/*
-// @copyright  2012+, 
 // ==/UserScript==
 
 function ReplaceSnitch(postLinkBackg) {

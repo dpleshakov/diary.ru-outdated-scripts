@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name       diary button curs
-// @namespace  
-// @author     dpleshakov (http://userscripts.org/users/473776)
+// @namespace  http://github.com/dpleshakov/diary.ru-scripts/diary.ru_button_cursor.user.js
+// @author     dpleshakov (http://github.com/dpleshakov)
 // @version    1.0
 // @description  Fixed problem with [cuRs]. You can use [curs_]
 // @include      *://*.diary.ru/?newpost*
-// @copyright  dpleshakov, 2013+
 // ==/UserScript==
 
 function SetCursor() {

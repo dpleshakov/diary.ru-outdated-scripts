@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name       diary additional buttons
-// @namespace  diary_additional_buttons
-// @author     dpleshakov
-// @version    0.1
+// @namespace  http://github.com/dpleshakov/diary.ru-scripts/diary.ru_additional_buttons.user.js
+// @author     dpleshakov (http://github.com/dpleshakov)
+// @version    1.0
+// @description  Add additional buttons to new post page with link to any other web page.
 // @include    *://*diary.ru/?newpost*
 // ==/UserScript==
 
@@ -26,6 +27,10 @@ function AddButton(name, url) {
 	buttonsDiv.insertBefore(newAnchor, buttonsDiv.lastChild);
 }
 
-AddButton('Link', 'http://ya.ru')
-AddButton('Link', 'http://ya.ru')
+// TO DO
+// Remove comment
+// change name and url
+//
+// AddButton('Link', 'http://ya.ru')
+// AddButton('Link', 'http://ya.ru')
 

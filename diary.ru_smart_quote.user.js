@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name       diary smart quote
-// @namespace  http://userscripts.org/scripts/show/137004
-// @author     dpleshakov (http://userscripts.org/users/473776)
+// @namespace  http://github.com/dpleshakov/diary.ru-scripts/diary.ru_smart_quote.user.js
+// @author     dpleshakov (http://github.com/dpleshakov)
 // @version    0.8
 // @description  Smart quote
 // @include      *://*.diary.ru/?newpost&quote_*
-// @copyright  2012+, 
 // ==/UserScript==
 
 function CreatePost(authors, message) {
